@@ -1,0 +1,98 @@
+  E-Commerce Customer Segmentation — Multi-Algorithm
+============================================================
+
+[1/7] Loading data...
+  Raw: 541,909 rows × 8 columns
+
+[2/7] EDA...
+=======================================================
+Shape : 541,909 rows × 8 columns
+
+Null counts:
+              count      %
+InvoiceNo         0   0.00
+StockCode         0   0.00
+Description    1454   0.27
+Quantity          0   0.00
+InvoiceDate       0   0.00
+UnitPrice         0   0.00
+CustomerID   135080  24.93
+Country           0   0.00
+
+Describe (numeric):
+        Quantity  UnitPrice  CustomerID
+count  541909.00  541909.00   406829.00
+mean        9.55       4.61    15287.69
+std       218.08      96.76     1713.60
+min    -80995.00  -11062.06    12346.00
+25%         1.00       1.25    13953.00
+50%         3.00       2.08    15152.00
+75%        10.00       4.13    16791.00
+max     80995.00   38970.00    18287.00
+=======================================================
+
+[3/7] Cleaning & building RFM...
+  Dropped 135,080 rows with missing CustomerID
+  Dropped 8,905 cancellation rows
+  Dropped 40 rows with Quantity<=0 or UnitPrice<=0
+  Clean dataset: 397,884 rows, 4,338 unique customers
+
+RFM table built: 4,338 customers
+       CustomerID  Recency  Frequency   Monetary
+count     4338.00  4338.00    4338.00    4338.00
+mean     15300.41    92.54       4.27    2054.27
+std       1721.81   100.01       7.70    8989.23
+min      12346.00     1.00       1.00       3.75
+25%      13813.25    18.00       1.00     307.41
+50%      15299.50    51.00       2.00     674.48
+75%      16778.75   142.00       5.00    1661.74
+max      18287.00   374.00     209.00  280206.02
+
+[4/7] Log-transform & scaling...
+  Log1p applied to Frequency and Monetary.
+
+[5/7] Diagnostic plots for K selection...
+  k=2  inertia=3,790  silhouette=0.3903
+  k=3  inertia=2,217  silhouette=0.4218
+  k=4  inertia=1,724  silhouette=0.3718
+  k=5  inertia=1,477  silhouette=0.3561
+  k=6  inertia=1,264  silhouette=0.3242
+  k=7  inertia=1,128  silhouette=0.3288
+  k=8  inertia=1,028  silhouette=0.2959
+  k=2  BIC=17,929.0  AIC=17,807.9
+  k=3  BIC=16,901.1  AIC=16,716.2
+  k=4  BIC=2,157.0  AIC=1,908.4
+  k=5  BIC=-5,376.7  AIC=-5,689.1
+  k=6  BIC=-6,011.9  AIC=-6,388.0
+  k=7  BIC=-6,282.1  AIC=-6,722.0
+  k=8  BIC=-13,091.7  AIC=-13,595.4
+
+[6/7] Fitting all algorithms...
+  K-Means (k=3) silhouette: 0.4218
+  Agglomerative (k=3) silhouette: 0.3805
+  DBSCAN (eps=0.3, min_samples=10)
+    Clusters found : 2
+    Noise points   : 114 (2.6%)
+    Silhouette (excl. noise): 0.3210
+  GMM (k=3) silhouette: 0.1935
+  Avg max membership probability : 0.8752
+
+[7/7] Comparing algorithms & saving visuals...
+  K-Means                         sil=0.4218  DB=0.8069  CH=4591.3  noise=0.0%
+  Agglomerative                   sil=0.3805  DB=0.8580  CH=3875.8  noise=0.0%
+  DBSCAN                          sil=0.3210  DB=1.1822  CH=2282.6  noise=2.6%
+  GMM                             sil=0.1935  DB=1.5679  CH=2116.9  noise=0.0%
+
+    Algorithm  N Clusters  Silhouette ↑  Davies-Bouldin ↓  Calinski-Harabasz ↑  Noise %
+      K-Means           3        0.4218            0.8069               4591.3      0.0
+Agglomerative           3        0.3805            0.8580               3875.8      0.0
+       DBSCAN           2        0.3210            1.1822               2282.6      2.6
+          GMM           3        0.1935            1.5679               2116.9      0.0
+
+Cluster Profile (Cluster):
+ Cluster  Recency  Frequency  Monetary  CustomerCount           Segment
+       1    30.49       9.59   5387.96           1367         Champions
+       0    54.49       2.02    577.05           1984   Loyal Customers
+       2   254.95       1.43    406.48            987 Occasional Buyers
+
+✅  Done.
