@@ -10,7 +10,7 @@ Customer segmentation project using RFM (Recency, Frequency, Monetary) analysis 
 Cust_Seg/
 ├── main.py                  # Entry point — runs the full pipeline
 ├── data/
-│   └── data.csv             # Raw transactional dataset (place here)
+│   └── data.csv             # Raw transactional dataset 
 ├── src/
 │   ├── data_loader.py       # CSV loading with encoding/delimiter support
 │   ├── preprocessing.py     # Cleaning, RFM engineering, log-transform, scaling
